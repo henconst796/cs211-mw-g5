@@ -1,27 +1,177 @@
 #include <iostream>
 #include <random>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 
 void move_left(int board[][5], int numrows = 5)
 {
-	//CODE HERE
+	for (int r = 0; r < numrows; r++)
+	{
+		int columns = 0;
+		for (int c = 0; c < 5; c++)
+		{
+			if (board[r][c] != 0)
+			{
+				if (c != columns)
+				{
+					board[r][columns] = board[r][c];
+					board[r][c] = 0;
+				}
+				columns++;
+			}
+		}
+
+		for (int c = 0; c < 4; c++)
+		{
+			if (board[r][c] != 0 && board[r][c] == board[r][c + 1])
+			{
+				board[r][c] *= 2;
+				board[r][c + 1] = 0;
+			}
+		}
+		columns = 0;
+		for (int c = 0; c < 5; c++)
+		{
+			if (board[r][c] != 0)
+			{
+				if (c != columns)
+				{
+					board[r][columns] = board[r][c];
+					board[r][c] = 0;
+				}
+				columns++;
+			}
+		}
+	}
 }
+
 
 void move_right(int board[][5], int numrows = 5)
 {
-	//CODE HERE
+	for (int r = 0; r < numrows; r++)
+	{
+		int columns = 4;
+		for (int c = 4; c >= 0; c--)
+		{
+			if (board[r][c] != 0)
+			{
+				if (c != columns)
+				{
+					board[r][columns] = board[r][c];
+					board[r][c] = 0;
+				}
+				columns--;
+			}
+		}
+		for (int c = 4; c > 0; c--)
+		{
+			if (board[r][c] != 0 && board[r][c] == board[r][c - 1])
+			{
+				board[r][c] *= 2;
+				board[r][c - 1] = 0;
+			}
+		}
+		columns = 4;
+		for (int c = 4; c >= 0; c--)
+		{
+			if (board[r][c] != 0)
+			{
+				if (c != columns)
+				{
+					board[r][columns] = board[r][c];
+					board[r][c] = 0;
+				}
+				columns--;
+			}
+		}
+	}
 }
+
 
 void move_up(int board[][5], int numrows = 5)
 {
-	//CODE HERE
+    for (int c = 0; c < 5; c++)
+	{
+        int columns = 0;
+	    for (int r = 0; r < numrows; r++)
+	    {
+	        if (board[r][c] != 0)
+	        {
+	        if (r != columns)
+            {
+	           board[columns][c] = board[r][c];
+	           board[r][c] = 0;
+	        }
+	            columns++;
+	       }
+	   }
+	for (int r = 0; r < numrows - 1; r++)
+	    {
+		    if (board[r][c] != 0 && board[r][c] == board[r + 1][c])
+			{
+				board[r][c] *= 2;
+				board[r + 1][c] = 0;
+			}
+		}
+		    columns = 0;
+		    for (int r = 0; r < numrows; r++)
+		{
+			if (board[r][c] != 0)
+			{
+			if (r != columns)
+			{
+				board[columns][c] = board[r][c];
+				board[r][c] = 0;
+			}
+			columns++;
+			}
+		}
+	}
 }
+
 
 void move_down(int board[][5], int numrows = 5)
 {
-	//CODE HERE
+	for (int c = 0; c < 5; c++)
+	{
+	    int columns = numrows - 1;
+	    for (int r = numrows - 1; r >= 0; r--)
+	        {
+		        if (board[r][c] != 0)
+			{
+				if (r != columns)
+				{
+				    board[columns][c] = board[r][c];
+					board[r][c] = 0;
+				}
+				columns--;
+			}
+		}
+		for (int r = numrows - 1; r > 0; r--)
+		{
+			if (board[r][c] != 0 && board[r][c] == board[r - 1][c])
+			{
+				board[r][c] *= 2;
+				board[r - 1][c] = 0;
+			}
+		}
+		columns = numrows - 1;
+		for (int r = numrows - 1; r >= 0; r--)
+		{
+			if (board[r][c] != 0)
+			{
+				if (r != columns)
+				{
+					board[columns][c] = board[r][c];
+					board[r][c] = 0;
+				}
+				columns--;
+			}
+		}
+	}
 }
+
 
 
 void print_board(int board[][5], int numrows = 5)
