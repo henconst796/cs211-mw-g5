@@ -1,3 +1,4 @@
+# Luhn Tests (Part B)
 
 | # | Test input or action | Expected result | Actual result | Pass/Fail |
 |---|---|---|---|---|
@@ -8,5 +9,5 @@
 | 5 | 45320151128303666 | Reject: 17 digits | Invalid format: please enter exactly 16 digits (0-9), with no spaces, letters, or symbols. | Pass |
 | 6 | 453201511283036X | Reject: non-digit | Invalid format: please enter exactly 16 digits (0-9), with no spaces, letters, or symbols. | Pass |
 | 7 | 4532 015112830366 (internal space) | Reject: malformed input | Invalid format: please enter exactly 16 digits (0-9), with no spaces, letters, or symbols. | Pass |
-| 8 | Several checks followed by exit (Q) | Results correct; loop exits cleanly | Each number, correct result; typing Q printed "Goodbye!" and the program ended. | Pass |
+| 8 | Several checks followed by exit (Q) | Results correct; loop exits cleanly | Each number gave the correct result; typing Q printed "Goodbye!" and the program ended. | Pass |
 | 9 | Ctrl+Z then Enter (end of input) | Program exits cleanly | Printed "Goodbye!" and the program ended. | Pass |
