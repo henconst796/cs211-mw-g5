@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 
 void move_left(int board[][5], int numrows = 5)
