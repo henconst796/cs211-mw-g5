@@ -4,41 +4,47 @@ using namespace std;
 
 int main()
 {
-	int size = 5;
-	int board[5][5] = {
-		{0, 4, 2, 4, 0},
-		{0, 0, 0, 0, 0},
-		{2, 0, 2, 0, 2},
-		{0, 0, 2, 0, 0},
-		{2, 2, 2, 2, 2},
-	};
-	//while getch == x loop for up down left right
+    int size = 5;
+    int board[5][5] = {
+        {0, 4, 2, 4, 0},
+        {0, 0, 0, 0, 0},
+        {2, 0, 2, 0, 2},
+        {0, 0, 2, 0, 0},
+        {2, 2, 2, 2, 2},
+    };
+    int score = 0;
 
-	cout << "Initial Board : [5x5] :" << endl;
-	print_board(board);
+    cout << "Initial Board : [5x5] :" << endl;
+    print_board(board);
+    cout << "Score: " << score << endl;
 
-	char choice = 'u';	//initialized
-	while (choice != 'e')
-	{
+    char choice = 'u';   // initialized
+    while (choice != 'e')
+    {
+        cout << "Please enter choice:{u,d,l,r,e} for UP, DOWN, LEFT, RIGHT, Exit: " << endl;
+        cout << "Choice: ";
+        cin >> choice;
 
-		cout << "Please enter choice:{u,d,l,r,e} for UP, DOWN, LEFT, RIGHT, Exit: " << endl;
-		cout << "Choice: ";
-		cin >> choice;
+        bool changed = false;   // did the move actually change the board?
 
-		if (choice == 'u')
-			move_up(board, size);
-		else if (choice == 'd')
-			move_down(board, size);
-		else if (choice == 'l')
-			move_left(board, size);
-		else if (choice == 'r')
-			move_right(board, size);
+        if (choice == 'u')
+            changed = move_up(board, score, size);
+        else if (choice == 'd')
+            changed = move_down(board, score, size);
+        else if (choice == 'l')
+            changed = move_left(board, score, size);
+        else if (choice == 'r')
+            changed = move_right(board, score, size);
 
-		insert_random(board, size);
-		print_board(board);
+        // Only add a new tile after a move that changed the board
+        if (changed)
+        {
+            insert_random(board, size);
+        }
 
-	}
+        print_board(board);
+        cout << "Score: " << score << endl;
+    }
 
-
-	return 0;
+    return 0;
 }
