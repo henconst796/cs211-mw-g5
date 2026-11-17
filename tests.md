@@ -49,3 +49,28 @@ Result: **15 of 15 passed.**
 |---|---|---|---|---|
 | 16 | Press `l` on the starting board | Rows become 4 2 4 0 0 / 0 0 0 0 0 / 4 2 0 0 0 / 2 0 0 0 0 / 4 4 2 0 0 before the random tile; score goes from 0 to 12 (4 + 8); exactly one new tile appears | Score: 12; the rows matched; exactly one new tile appeared | Pass |
 | 17 | Press `x` (invalid command) | No new tile, score unchanged | No new tile; score unchanged | Pass |
+
+
+## 2048 Save and Load Tests (Save/Load PR)
+
+Built and run from the main project folder (no warnings):
+
+```
+g++ -std=c++17 -Wall -Wextra -pedantic game2048/main.cpp game2048/2048_helper.cpp game2048/save_load.cpp -o game
+.\game
+```
+
+For tests 20-25, `savegame.txt` was replaced with the text shown (rows separated by ` / `). Then `l` was pressed on the starting board (Score 12, Moves 1) before `o`, to show that a failed load leaves the current game unchanged.
+
+| # | Action | Expected | Actual | Pass/Fail |
+|---|---|---|---|---|
+| 18 | Press `l`, `s` (save), `r`, then `o` (load) | After `s`: "Game saved". After `r`: score and moves go up. After `o`: the exact saved board, Score 12 and Moves 1 come back; no new tile | `savegame.txt` held CS211_2048_V1 / 12 1 / the 5 rows on screen. After `r`, score and moves went up. After `o`: "Game loaded", Score 12, Moves 1, every cell matched the saved rows | Pass |
+| 19 | Teacher's sample file: CS211_2048_V1 / 8 3 / 4 4 0 0 0 / 0 0 0 0 0 / 2 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0; press `o` at the start | "Game loaded"; Score 8, Moves 3; board matches the file; no new tile | "Game loaded from savegame.txt."; Score 8, Moves 3; board matched; no new tile | Pass |
+| 20 | Invalid tile: first board row is 3 4 0 0 0 | Load failed; game unchanged | "Load failed: board values must be 0 or a power of two"; still Score 12, Moves 1, same board | Pass |
+| 21 | Incomplete: only 4 board rows (20 numbers) | Load failed; game unchanged | "Load failed: the board needs exactly 25 whole numbers"; still Score 12, Moves 1, same board | Pass |
+| 22 | Wrong marker: first line is CS211_2048_V2 | Load failed; game unchanged | "Load failed: the first line must be CS211_2048_V1"; still Score 12, Moves 1, same board | Pass |
+| 23 | Extra content: the word `hello` after the board | Load failed; game unchanged | "Load failed: there is extra content after the board"; still Score 12, Moves 1, same board | Pass |
+| 24 | Negative score: second line is -8 3 | Load failed; game unchanged | "Load failed: the score and move count can't be negative"; still Score 12, Moves 1, same board | Pass |
+| 25 | Missing file: `savegame.txt` deleted | Load failed; game unchanged | "Load failed: savegame.txt was not found"; still Score 12, Moves 1, same board | Pass |
+
+Result: **8 of 8 passed.**
