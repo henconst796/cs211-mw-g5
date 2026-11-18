@@ -32,15 +32,15 @@ bool boards_differ(int a[][5], int b[][5], int numrows)
     return false;
 }
 
-bool move_left(int board[][5], int& score, int numrows)
+bool move_left(int board[][5], int &score, int numrows)
 {
     int before[5][5];
-    copy_board(board, before, numrows);   // remember the board so we can tell if it changed
+    copy_board(board, before, numrows); // remember the board so we can tell if it changed
 
     for (int r = 0; r < numrows; r++)
     {
         // Step 1: slide every tile as far left as it can go
-        int columns = 0;   // the next free spot from the left
+        int columns = 0; // the next free spot from the left
         for (int c = 0; c < 5; c++)
         {
             if (board[r][c] != 0)
@@ -60,8 +60,8 @@ bool move_left(int board[][5], int& score, int numrows)
             if (board[r][c] != 0 && board[r][c] == board[r][c + 1])
             {
                 board[r][c] = board[r][c] * 2;
-                score = score + board[r][c];   // the new tile's value is added to the score
-                board[r][c + 1] = 0;           // the emptied spot can't merge again this move
+                score = score + board[r][c]; // the new tile's value is added to the score
+                board[r][c + 1] = 0;         // the emptied spot can't merge again this move
             }
         }
 
@@ -84,7 +84,7 @@ bool move_left(int board[][5], int& score, int numrows)
     return boards_differ(board, before, numrows);
 }
 
-bool move_right(int board[][5], int& score, int numrows)
+bool move_right(int board[][5], int &score, int numrows)
 {
     int before[5][5];
     copy_board(board, before, numrows);
@@ -92,7 +92,7 @@ bool move_right(int board[][5], int& score, int numrows)
     for (int r = 0; r < numrows; r++)
     {
         // Step 1: slide every tile as far right as it can go
-        int columns = 4;   // the next free spot from the right
+        int columns = 4; // the next free spot from the right
         for (int c = 4; c >= 0; c--)
         {
             if (board[r][c] != 0)
@@ -136,7 +136,7 @@ bool move_right(int board[][5], int& score, int numrows)
     return boards_differ(board, before, numrows);
 }
 
-bool move_up(int board[][5], int& score, int numrows)
+bool move_up(int board[][5], int &score, int numrows)
 {
     int before[5][5];
     copy_board(board, before, numrows);
@@ -144,7 +144,7 @@ bool move_up(int board[][5], int& score, int numrows)
     for (int c = 0; c < 5; c++)
     {
         // Step 1: slide every tile in this column as far up as it can go
-        int rows = 0;   // the next free spot from the top
+        int rows = 0; // the next free spot from the top
         for (int r = 0; r < numrows; r++)
         {
             if (board[r][c] != 0)
@@ -188,7 +188,7 @@ bool move_up(int board[][5], int& score, int numrows)
     return boards_differ(board, before, numrows);
 }
 
-bool move_down(int board[][5], int& score, int numrows)
+bool move_down(int board[][5], int &score, int numrows)
 {
     int before[5][5];
     copy_board(board, before, numrows);
@@ -196,7 +196,7 @@ bool move_down(int board[][5], int& score, int numrows)
     for (int c = 0; c < 5; c++)
     {
         // Step 1: slide every tile in this column as far down as it can go
-        int rows = numrows - 1;   // the next free spot from the bottom
+        int rows = numrows - 1; // the next free spot from the bottom
         for (int r = numrows - 1; r >= 0; r--)
         {
             if (board[r][c] != 0)
@@ -242,7 +242,8 @@ bool move_down(int board[][5], int& score, int numrows)
 
 void print_board(int board[][5], int numrows)
 {
-    cout << endl << "\t-----------------------------------------" << endl;
+    cout << endl
+         << "\t-----------------------------------------" << endl;
 
     for (int r = 0; r < numrows; r++)
     {
@@ -257,7 +258,8 @@ void print_board(int board[][5], int numrows)
         cout << "\t-----------------------------------------" << endl;
     }
 
-    cout << "\t" << endl << endl;
+    cout << "\t" << endl
+         << endl;
 }
 
 void insert_random(int board[][5], int numrows)
@@ -283,9 +285,88 @@ void insert_random(int board[][5], int numrows)
             // Use it only if it's empty
             if (board[r][c] == 0)
             {
-                board[r][c] = 2 * (1 + (rand() % 2));
+                board[r][c] = 2;
                 break;
             }
         }
     }
+}
+void new_game(int board[][5], int &score, int &moves)
+{
+    for (int r = 0; r < 5; r++)
+    {
+        for (int c = 0; c < 5; c++)
+        {
+            board[r][c] = 0;
+        }
+    }
+    score = 0;
+    moves = 0;
+
+    insert_random(board);
+    insert_random(board);
+}
+
+int highest_tile(int board[][5])
+{
+    int highest = 0;
+    for (int r = 0; r < 5; r++)
+    {
+        for (int c = 0; c < 5; c++)
+        {
+            if (board[r][c] > highest)
+            {
+                highest = board[r][c];
+            }
+        }
+    }
+    return highest;
+}
+
+bool can_move(int board[][5])
+{
+    for (int r = 0; r < 5; r++)
+    {
+        for (int c = 0; c < 5; c++)
+        {
+            if (board[r][c] == 0)
+            {
+                return true;
+            }
+            if (c < 4 && board[r][c] == board[r][c + 1])
+            {
+                return true;
+            }
+            if (r < 4 && board[r][c] == board[r + 1][c])
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void show_game(int board[][5], int score, int moves)
+{
+    print_board(board);
+    cout << "Score: " << score << "   Moves: " << moves << "   Highest tile: " << highest_tile(board) << endl;
+
+    if (!can_move(board))
+    {
+        cout << "Game over! No moves are left. You can still save (s), load (o), start a new game (n), get help (h) or exit (e)." << endl;
+    }
+}
+
+void print_help()
+{
+    cout << endl;
+    cout << "Commands (type one letter, then press Enter):" << endl;
+    cout << "  u = up, d = down, l = left, r = right" << endl;
+    cout << "  s = save the game to savegame.txt (this replaces any earlier save)" << endl;
+    cout << "  o = open (load) the game from savegame.txt" << endl;
+    cout << "  n = new game (asks you first)" << endl;
+    cout << "  h = show this help" << endl;
+    cout << "  e = exit" << endl;
+    cout << "Join equal tiles to reach 2048. A new 2 appears after every move that changes the board." << endl;
+    cout << endl;
 }
