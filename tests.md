@@ -74,3 +74,30 @@ For tests 20-25, `savegame.txt` was replaced with the text shown (rows separated
 | 25 | Missing file: `savegame.txt` deleted | Load failed; game unchanged | "Load failed: savegame.txt was not found"; still Score 12, Moves 1, same board | Pass |
 
 Result: **8 of 8 passed.**
+
+## 2048 Game Loop Tests (Game Loop PR)
+
+Built and run from the main project folder (no warnings):
+
+    g++ -std=c++17 -Wall -Wextra -pedantic game2048/main.cpp game2048/2048_helper.cpp game2048/save_load.cpp -o game
+    .\game
+
+Note: tests 16-25 were run before this PR, when the game always started from the fixed starter board. The game now starts with two random 2s, so this PR sets up exact boards by loading a `savegame.txt` (shown with rows separated by ` / `) and pressing `o`. The movement and save/load code did not change.
+
+| # | Action | Expected | Actual | Pass/Fail |
+|---|---|---|---|---|
+| 26 | Start the program | Help is shown; board has exactly two 2s in different cells; Score 0, Moves 0, Highest tile 2 | Help shown; two 2s in different cells; Score: 0, Moves: 0, Highest tile: 2 | Pass |
+| 27 | Press `h` | Command list is shown; board, score and moves unchanged | Command list shown; nothing else changed | Pass |
+| 28 | Type `x`, then a whole word, then `y` at the Choice prompt | "Invalid command" each time; nothing changes | "Invalid command. Type one letter, or h for help." all three times; nothing changed | Pass |
+| 29 | Press `n`, then answer `n` | Game is not reset | "New game cancelled."; board, score and moves unchanged | Pass |
+| 30 | Press `n`, then answer `y` | New game: two 2s, Score 0, Moves 0 | New board with two 2s; Score: 0, Moves: 0, Highest tile: 2 | Pass |
+| 31 | Press `e` | Program ends | "Goodbye!" and the program ended | Pass |
+| 32 | Press Ctrl+Z then Enter (end of input) | Program ends cleanly, no endless loop | "No more input. Goodbye!" and the program ended | Pass |
+| 33 | Slide with no merge: load CS211_2048_V1 / 0 0 / 0 0 2 0 4 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0, press `l` | Row 0 becomes 2 4 0 0 0 before the random tile; exactly one new 2; Score stays 0; Moves 0 to 1 | Row 0 was 2 4 0 0 0; one new 2 appeared; Score: 0, Moves: 1 | Pass || # | Action | Expected | Actual | Pass/Fail |
+|---|---|---|---|---|
+| 34 | Unchanged move: load CS211_2048_V1 / 0 0 / 2 4 8 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0, press `l` | No new tile; Score and Moves unchanged | "Nothing moved, so no new tile was added."; Score: 0, Moves: 0 | Pass |
+| 35 | Full board with a possible merge: load CS211_2048_V1 / 10 4 / 2 2 4 8 16 / 4 8 16 32 64 / 2 4 8 16 32 / 4 8 16 32 64 / 2 4 8 16 32, press `l` | Move is allowed; row 0 becomes 4 4 8 16 0, then the new 2 fills the only empty cell; Score 10 to 14; Moves 4 to 5 | Row 0 was 4 4 8 16 2; Score: 14, Moves: 5 | Pass |
+| 36 | Full board, no moves: load CS211_2048_V1 / 10 4 / 2 4 2 4 2 / 4 2 4 2 4 / 2 4 2 4 2 / 4 2 4 2 4 / 2 4 2 4 2, then press `l`, `h`, `e` | "Game over" after loading; movement refused; help and exit still work | "Game over! No moves are left..."; `l` gave "Game over: no moves are possible..."; help shown; "Goodbye!" | Pass |
+| 37 | Reaching 2048: load CS211_2048_V1 / 100 7 / 1024 1024 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0, press `r`, then `l` | Row 0 becomes 0 0 0 0 2048 before the random tile; win message; Score 100 to 2148; Moves 7 to 8; play continues | "You made a 2048 tile. You win! You can keep playing."; Score: 2148, Moves: 8; after `l`, Moves: 9 | Pass |
+
+Result: **12 of 12 passed.**
