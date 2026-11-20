@@ -101,3 +101,8 @@ Note: tests 16-25 were run before this PR, when the game always started from the
 | 37 | Reaching 2048: load CS211_2048_V1 / 100 7 / 1024 1024 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0 / 0 0 0 0 0, press `r`, then `l` | Row 0 becomes 0 0 0 0 2048 before the random tile; win message; Score 100 to 2148; Moves 7 to 8; play continues | "You made a 2048 tile. You win! You can keep playing."; Score: 2148, Moves: 8; after `l`, Moves: 9 | Pass |
 
 Result: **12 of 12 passed.**
+
+Final clean-extraction build test (Final docs PR)
+| # | Action | Expected | Actual | Pass/Fail |
+
+| 38 | Downloaded the docs/final-package branch as a ZIP, extracted it into a new empty folder, opened a terminal in the top-level folder and ran the three build commands from README.md. Then ran move_tests, started the game, checked 4532015112830366 in the Luhn program, and loaded the sample save (copy game2048\sample_save.txt savegame.txt, then o) | All three build with no warnings; move_tests prints 15 of 15 tests passed; the game starts with two 2s and Score 0, Moves 0; Luhn reports "Correct format. Checksum PASSES."; the sample save loads with Score 8, Moves 3 | All three built with no warnings; 15 of 15 tests passed; the game started with two 2s and Score 0, Moves 0; Luhn printed "Correct format. Checksum PASSES."; the sample save loaded with Score 8, Moves 3 | Pass |
